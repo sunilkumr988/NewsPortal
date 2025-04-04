@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
+import authRoutes from "./routes/auth.route.js";
+
 dotenv.config()
 
 
@@ -17,15 +19,16 @@ mongoose
 
 const app = express();
 
-// Register routes
- // Corrected to use the correct variable name
+// for allowing json object in req body
+app.use(express.json())
+
 
 app.get("/", (req, res)=>{
   res.send("Hello");
 })
 // Start server
-app.listen(8080, ()=>{
-  console.log('listening to port : 8080'); 
+app.listen(7000, ()=>{
+  console.log('listening to port : 7000'); 
 });
 
-// app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes)

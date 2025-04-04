@@ -5,12 +5,16 @@ export const signup = async (req, res) => {
     const { username, email, password } = req.body;
 
     // Check if fields are empty
-    if (!username || !email || !password || username === "" || email === "" || password === "") {
-        return res.status(400).json({
-            message: "All Fields Required"
-
-        }) 
-    }
+    if (
+        !username ||
+        !email ||
+        !password ||
+        username === "" ||
+        email === "" ||
+        password === ""
+      ) {
+        return res.status(400).json({ message: "All fields are required" })
+      }
 
     // Hash the password
     const hashedPassword = bcryptjs.hashSync(password, 10);
@@ -20,7 +24,7 @@ export const signup = async (req, res) => {
         username,
         email,
         password: hashedPassword,
-    });
+    })
 
     try {
         // Save the new user to the database
@@ -29,6 +33,6 @@ export const signup = async (req, res) => {
         res.json("Signup successful");
     } catch (error) {
         // Send error response if save fails
-        res.status(500).json({ message: error.message });
+        next(error)
     }
 };
