@@ -1,7 +1,8 @@
 import bcryptjs from 'bcryptjs';
 import User from '../models/user.model.js';
+import { errorHandler } from '../utilis/error.js';
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
 
     // Check if fields are empty
@@ -13,8 +14,8 @@ export const signup = async (req, res) => {
         email === "" ||
         password === ""
       ) {
-        return res.status(400).json({ message: "All fields are required" })
-      }
+        return next(errorHandler(400, "All fields are required"))
+    }
 
     // Hash the password
     const hashedPassword = bcryptjs.hashSync(password, 10);
@@ -27,12 +28,10 @@ export const signup = async (req, res) => {
     })
 
     try {
-        // Save the new user to the database
         await newUser.save();
 
         res.json("Signup successful");
     } catch (error) {
-        // Send error response if save fails
         next(error)
     }
 };
