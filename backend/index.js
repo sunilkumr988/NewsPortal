@@ -1,27 +1,31 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 import dotenv from "dotenv";
-import authRoutes from "./routes/auth.route.js"; // Corrected variable name here to match your import
 
-dotenv.config();
+dotenv.config()
 
-const app = express();
-// for allowing JSON objects in req body
-app.use(express.json());
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+.connect(process.env.MONGO_URI)
+.then(() => {
+  console.log("Database is connected")
+})
+.catch((err) => {
+  console.log(err)
+})
 
-  .then(() => console.log('MongoDB Connected...'))
-  .catch((err) => {
-    console.error("MongoDB Connection Error:",err);
-  });
+const app = express();
 
 // Register routes
  // Corrected to use the correct variable name
 
+app.get("/", (req, res)=>{
+  res.send("Hello");
+})
 // Start server
-app.listen(7000, () => {
-  console.log('Server running on port 7000');
+app.listen(8080, ()=>{
+  console.log('listening to port : 8080'); 
 });
-app.use("/api/auth", authRoutes)
+
+// app.use("/api/auth", authRoutes)
