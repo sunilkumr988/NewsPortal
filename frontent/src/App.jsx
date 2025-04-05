@@ -9,6 +9,7 @@ import Header from "./components/shared/Header";
 import PostDetails from "./pages/PostDetails";
 import Search from "./pages/Search";
 import NewsArticles from "./pages/NewsArticles";
+import Footer from "./components/shared/Footer"
 
 const App = () => {
   return (
@@ -23,6 +24,8 @@ const App = () => {
         <Route path="/news" element={<NewsArticles />} />
         <Route path="/post/:postSlug" element={<PostDetails />} />
       </Routes>
+
+      <Footer />
       <Toaster />
     </BrowserRouter>
   );
