@@ -1,5 +1,6 @@
-import React from 'react';
+import 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
 import SignInForm from "./auth/forms/SignInForm";
 import SignUpForm from "./auth/forms/SignUpForm";
 import Home from "./pages/Home";
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/news" element={<NewsArticles />} />
         <Route path="/post/:postSlug" element={<PostDetails />} />
       </Routes>
+      <Toaster />
     </BrowserRouter>
   );
 };
