@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { signInFailure, signInStart, signInSuccess } from "@/redux/user/userSlice";
 
 
 const formSchema = z.object({
@@ -28,11 +30,10 @@ const formSchema = z.object({
 const SignInForm = () => {
   const { toast } = useToast()
   const naviagate = useNavigate()
+  const dispatch = useDispatch()
 
-  const [loading, setLoading] = useState(false)
-  // const setLoading = useState(false)
-  const [errorMessage, setErrorMessage] = useState(null)
-  // const setErrorMessage = useState(null)
+  const {loading, error: errorMessage} = useSelector((state) => state.user)
+
     // 1. Define your form.
     const form = 
       useForm({
@@ -45,8 +46,7 @@ const SignInForm = () => {
       // 2. Define a submit handler.
     async function onSubmit(values) {
       try{
-        setLoading(true)
-        setErrorMessage(null)
+        dispatch(signInStart())
 
         const res = await fetch("/api/auth/signin", {
           method: "POST",
@@ -57,22 +57,21 @@ const SignInForm = () => {
         const data = await res.json();
 
         if(data.success === false){
-          setLoading(false)
           toast({ title: "Sign in failed! Please try again." })
-          return setErrorMessage(data.message)
+          dispatch(signInFailure(data.message))
         }
         
-        setLoading(false)
+        
         
           if(res.ok){
+            dispatch(signInSuccess(data))
             toast({ title: "Sign in Successful!" })
 
             naviagate("/")
           }
       }catch(error){
-        setErrorMessage(error.message)
-        setLoading(false)
         toast({ title: "Something went wrong!" })
+        dispatch(signInFailure(error.message))
       }
     }
 
