@@ -2,9 +2,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { Button } from "../ui/button";
+import { useSelector  } from "react-redux";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 
 const Header = () => {
+  const { currentUser } = useSelector((state) => state.user)
+  // console.log(currentUser)
+
   return (
     <header className="shadow-lg sticky top-0 bg-white">
       <div className="flex justify-between items-center max-w-6xl lg:max-w-7xl mx-auto p-4">
@@ -49,11 +63,41 @@ const Header = () => {
         </ul>
 
         {/* Sign In Button */}
-        <Link to="/sign-in">
-          <Button className="px-4 py-2 bg-blue-500 text-white rounded">
-            Sign In
-          </Button>
-        </Link>
+        {currentUser ? (
+          <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div>
+              <img src={currentUser.profilePicture}
+               alt="user photo"
+                className="w-10 h-10 rounded-full" 
+                />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-60">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+
+            <DropdownMenuSeparator className="bg-gray-400" />
+            <DropdownMenuItem className="block font-semibold text-sm">
+              <div className="flex flex-col gap-1">
+                <span>@{currentUser.username}</span>
+                <span>@{currentUser.email}</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="font-semibold mt-2">
+              <Link to="/dashboard?tab=profile">Profile</Link>
+              </DropdownMenuItem>
+
+            <DropdownMenuItem className="font-semibold mt-2">
+              Sign Out
+              </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        
+        ) : (
+          <Link to={"/sign-in"}>
+            <Button>Sign In</Button>
+          </Link>
+        )}
       </div>
     </header>
   );
