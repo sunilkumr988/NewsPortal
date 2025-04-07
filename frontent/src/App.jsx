@@ -10,6 +10,8 @@ import PostDetails from "./pages/PostDetails";
 import Search from "./pages/Search";
 import NewsArticles from "./pages/NewsArticles";
 import Footer from "./components/shared/Footer"
+import PrivateRoute from './components/shared/PrivateRoute';
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   return (
@@ -20,6 +22,12 @@ const App = () => {
         <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+
+        
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+
         <Route path="/search" element={<Search />} />
         <Route path="/news" element={<NewsArticles />} />
         <Route path="/post/:postSlug" element={<PostDetails />} />
