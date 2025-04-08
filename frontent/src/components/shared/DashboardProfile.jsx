@@ -8,6 +8,7 @@ import {
   updateFailure, 
   updateStart, 
   updateSuccess,
+  signOutSuccess,
 } from "@/redux/user/userSlice"
 import { getFilePreview, uploadFile } from "@/lib/appwrite/uploadImage"
 import { useToast } from "@/hooks/use-toast"
@@ -120,6 +121,25 @@ const DashboardProfile = () => {
     }
   }
 
+  const handleSignout = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        console.log(data.message)
+      } else {
+        dispatch(signOutSuccess())
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
 
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
@@ -203,7 +223,7 @@ const DashboardProfile = () => {
         <Button
           variant="ghost"
           className="cursor-pointer"
-          // onClick={handleSignout}
+          onClick={handleSignout}
         >
           Sign Out
         </Button>

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { Button } from "../ui/button";
-import { useSelector  } from "react-redux";
+import { useDispatch, useSelector  } from "react-redux";
 
 import {
   DropdownMenu,
@@ -13,10 +13,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { signOutSuccess } from "@/redux/user/userSlice"
 
 
 const Header = () => {
+  const dispatch = useDispatch()
+
   const { currentUser } = useSelector((state) => state.user)
+
+  const handleSignout = async () => {
+    try {
+          const res = await fetch("/api/user/signout", {
+            method: "POST",
+          })
+    
+          const data = await res.json()
+    
+          if (!res.ok) {
+            console.log(data.message)
+          } else {
+            dispatch(signOutSuccess())
+          }
+        } catch (error) {
+          console.log(error)
+        }
+  }
   // console.log(currentUser)
 
   return (
@@ -87,7 +108,7 @@ const Header = () => {
               <Link to="/dashboard?tab=profile">Profile</Link>
               </DropdownMenuItem>
 
-            <DropdownMenuItem className="font-semibold mt-2">
+            <DropdownMenuItem className="font-semibold mt-2" onClick={handleSignout}>
               Sign Out
               </DropdownMenuItem>
           </DropdownMenuContent>
