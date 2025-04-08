@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react"
 import { useSelector } from 'react-redux'
 import { Input } from "../ui/input"
+// import { Button } from "../ui/button"
 const DashboardProfile = () => {
   const { currentUser } = useSelector((state) => state.user)
 
@@ -40,7 +41,7 @@ const DashboardProfile = () => {
       type="text"  
       id="username" 
       placeholder="username" 
-      dafaultValue={currentUser.username} 
+      dafaultValue= {currentUser.username} 
       className="h-12 border border-slate-400 focus-visible:ring-0
       focus-visible:ring-offset-0"
       />
@@ -49,7 +50,7 @@ const DashboardProfile = () => {
       type="email"  
       id="email" 
       placeholder="email" 
-      dafaultValue={currentUser.email} 
+      dafaultValue= {currentUser.username}
       className="h-12 border border-slate-400 focus-visible:ring-0
       focus-visible:ring-offset-0"
       disabled

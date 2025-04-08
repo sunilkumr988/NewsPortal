@@ -1,8 +1,10 @@
 import express from 'express';
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cookieParser from 'cookie-parser';
 
 import authRoutes from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
 
 dotenv.config()
 
@@ -21,7 +23,7 @@ const app = express();
 
 // for allowing json object in req body
 app.use(express.json())
-
+app.use(cookieParser())
 
 app.get("/", (req, res)=>{
   res.send("Hello");
@@ -32,6 +34,8 @@ app.listen(7000, ()=>{
 });
 
 app.use("/api/auth", authRoutes)
+app.use("/api/user", userRoutes)
+
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500
