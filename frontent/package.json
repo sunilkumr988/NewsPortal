@@ -16,6 +16,7 @@
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.6",
     "@reduxjs/toolkit": "^2.6.1",
+    "appwrite": "^14.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "frontend": "file:",
