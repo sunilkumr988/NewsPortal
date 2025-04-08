@@ -12,7 +12,7 @@ export const updateUser = async(req, res, next) => {
             return next(errorHandler(400, "Password must be atlesat 8 characters"))
         }
 
-        req.body.password = bcryptjs.hasgSync(req.body.password, 10)
+        req.body.password = bcryptjs.hashSync(req.body.password, 10)
 
     }
 
@@ -51,6 +51,20 @@ export const updateUser = async(req, res, next) => {
 
         res.status(200).json(rest)
     }catch(error){
+        next(error)
+    }
+}
+
+export const deleteUser = async(req, res, next) => {
+    if(req.user.id !== req.params.userId){
+        return next(errorHandler(403, "You can only update your own account!"))
+    }
+
+    try{
+        await User.findByIdAndDelete(req.params.userId)
+
+        res.status(200).json("User has been delete!")
+    } catch ( error ) {
         next(error)
     }
 }

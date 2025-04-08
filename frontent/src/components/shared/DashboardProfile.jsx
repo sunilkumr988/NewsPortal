@@ -1,14 +1,31 @@
 import React, { useRef, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { Input } from "../ui/input"
-import { updateFailure, updateStart, updateSuccess } from "@/redux/user/userSlice"
+import { 
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  updateFailure, 
+  updateStart, 
+  updateSuccess,
+} from "@/redux/user/userSlice"
 import { getFilePreview, uploadFile } from "@/lib/appwrite/uploadImage"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "../ui/button"
-
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 const DashboardProfile = () => {
-  const { currentUser } = useSelector((state) => state.user)
+  const { currentUser, error } = useSelector((state) => state.user)
   const profilePicRef = useRef()
   const dispatch = useDispatch()
   const { toast } = useToast()
@@ -23,6 +40,7 @@ const DashboardProfile = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
+    
     if (file) {
       setImageFile(file)
       setImageFileUrl(URL.createObjectURL(file))
@@ -54,9 +72,7 @@ const DashboardProfile = () => {
       const profilePicture = await uploadImage()
 
       const updateProfile = {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password || undefined,
+        ...formData,
         profilePicture,
       }
 
@@ -82,6 +98,28 @@ const DashboardProfile = () => {
       dispatch(updateFailure(error.message))
     }
   }
+
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart())
+
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        dispatch(deleteUserFailure(data.message))
+      } else {
+        dispatch(deleteUserSuccess())
+      }
+    } catch (error) {
+      console.log(error)
+      dispatch(deleteUserFailure(error.message))
+    }
+  }
+
 
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
@@ -122,7 +160,7 @@ const DashboardProfile = () => {
         <Input
           type="password"
           id="password"
-          placeholder="password (leave blank to keep same)"
+          placeholder="password"
           className="h-12 border border-slate-400 focus-visible:ring-0 focus-visible:ring-offset-0"
           onChange={handleChange}
         />
@@ -133,9 +171,45 @@ const DashboardProfile = () => {
       </form>
 
       <div className="text-red-500 flex justify-between mt-5 cursor-pointer">
-        <span>Delete Account</span>
-        <span>Sign Out</span>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="ghost" className="cursor-pointer">Delete Account</Button>
+          </AlertDialogTrigger>
+
+        <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-600"
+                onClick={handleDeleteUser}
+              >
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+
+
+        <Button
+          variant="ghost"
+          className="cursor-pointer"
+          // onClick={handleSignout}
+        >
+          Sign Out
+        </Button>
       </div>
+
+      <p className="text-red-600">{error}</p>
     </div>
   )
 }
