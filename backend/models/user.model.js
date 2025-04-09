@@ -15,6 +15,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    prfilePicture: {
+        type: String,
+        default: "https://st2.depositphotos.com/1007566/12024/v/450/depositphotos_120246536-stock-illustration-reporter-man-live.jpg",
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+    },
 },{timestamps: true}); 
 
 const User = mongoose.model("User", userSchema);
