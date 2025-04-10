@@ -79,3 +79,49 @@ export const signout = async (req, res, next) => {
       next(error)
     }
   }
+
+  export const getUsers = async (req, res, next) => {
+    if(!req.user.isAdmin){
+        return next(errorHandler(403, "You are not authorized to access this resource!"))
+    }
+
+    try {
+        const startIndex = parseInt(req.query.startIndex) || 0
+        const limit = parseInt(req.query.limit) || 9
+        const sortDirection = req.query.sort === "asc"? 1 : -1
+        
+        const users = await User.find()
+        .sort({createdAt: sortDirection})
+        .skip(startIndex)
+        .limit(limit)
+
+        const getUsersWithoutPassword = users.map((user) => {
+            const {password: pass, ...rest} = user._doc
+
+            return user
+        })
+
+        const totalUsers = await User.countDocuments()
+
+        const now = new Date() // 2025 10 April
+
+        const oneMonthAgo = new Date( // 2025 10 May
+            now.getFullYear(),
+            now.getMonth() - 1,
+            now.getDate()
+        )
+
+        const lastMonthUsers = await User.countDocuments({
+            createdAt: { $gte : oneMonthAgo},
+        })
+
+        res.status(200).json({
+            users: getUsersWithoutPassword,
+            totalUsers,
+            lastMonthUsers,
+        })
+
+    } catch (error) {
+        next(error)
+    }
+  }
