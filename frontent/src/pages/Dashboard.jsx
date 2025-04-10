@@ -1,6 +1,7 @@
 import DashboardSidebar from '@/components/shared/DashboardSidebar'
 import DashboardProfile from '@/components/shared/DashboardProfile'
 import BottomNavBar from '@/components/shared/BottomNavBar'
+import DashboardPosts from '@/components/shared/DashboardPosts'
 import { Search } from 'lucide-react'
 import React, { useEffect, useState } from "react"
 import { useLocation } from 'react-router-dom'
@@ -30,7 +31,11 @@ const Dashboard = () => {
       <BottomNavBar />
 
       {/* profile */}
-      <div className='w-full'>{tab === "profile" && <DashboardProfile />}</div>
+      <div className='w-full'>
+        {tab === "profile" && <DashboardProfile />}
+        {/* newsArticle */}
+        {tab === "posts" && <DashboardPosts />}
+      </div>
     </div>
   ) 
 }

@@ -30,10 +30,16 @@ app.use(cookieParser())
 app.get("/", (req, res)=>{
   res.send("Hello");
 })
+
 // Start server
-app.listen(7000, ()=>{
-  console.log('listening to port : 7000'); 
-});
+
+
+app.listen(7000, () => {
+  console.log("Server is running on port 7000")
+})
+
+
+
 
 app.use("/api/auth", authRoutes)
 app.use("/api/user", userRoutes)
