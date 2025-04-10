@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { signOutSuccess } from "@/redux/user/userSlice"
 
-import { IoIosCreate } from "react-icons/io";
+import { IoIosCreate, IoIosDocument } from "react-icons/io";
 
 
 const DashboardSidebar = () => {
@@ -63,6 +63,20 @@ const DashboardSidebar = () => {
               </Link>
             </li>
           )}
+
+          {currentUser && currentUser.isAdmin && (
+            <li>
+              <Link
+                to={"/dashboard?tab=posts"}
+                className="flex items-center p-2 hover:bg-slate-300 rounded"
+              >
+                <IoIosDocument className='mr-3'/>
+                <span>Your articles</span>
+              </Link>
+            </li>
+          )}
+
+
 
         </ul>
         <div className='p-4 border=t border-gray-700'>
