@@ -28,7 +28,7 @@ const DashboardPosts = () => {
   const {currentUser} = useSelector((state) => state.user)
 
   const [userPosts, setUserPosts] = useState([])
-  console.log(userPosts)
+  // console.log(userPosts)
 
   const [showMore, setShowMore] = useState(true)
   const [postIdToDelete, setPostIdToDelete] = useState("")
