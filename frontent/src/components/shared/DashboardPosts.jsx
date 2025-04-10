@@ -43,6 +43,10 @@ const DashboardPosts = () => {
 
         if(res.ok){
           setUserPosts(data.posts)
+
+          if(data.posts.length < 9 ){
+            setShowMore(false)
+          }
         }
       } catch (error) {
         console.log(error)
@@ -67,9 +71,10 @@ const DashboardPosts = () => {
       if (res.ok) {
         setUserPosts((prev) => [...prev, ...data.posts])
 
-        if (data.posts.length < 9) {
+        if (data.posts.length < 9 ) {
           setShowMore(false)
         }
+        
       }
     } catch (error) {
       console.log(error.message)
@@ -197,6 +202,12 @@ const DashboardPosts = () => {
               </TableBody>
             ))}
           </Table>
+
+           {showMore && (
+            <button onClick={handleShowMore}
+            className='w-full text-blue-700 self-center text-sm py-7'
+            >Show more</button>
+           )} 
 
           </>
         ): (
