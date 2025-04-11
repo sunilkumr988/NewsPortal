@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaSignOutAlt, FaUser } from 'react-icons/fa'
+import { FaSignOutAlt, FaUser, FaUsers } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 import { useDispatch, useSelector } from "react-redux";
@@ -72,6 +72,18 @@ const DashboardSidebar = () => {
               >
                 <IoIosDocument className='mr-3'/>
                 <span>Your articles</span>
+              </Link>
+            </li>
+          )}
+
+          {currentUser && currentUser.isAdmin && (
+            <li>
+              <Link
+                to={"/dashboard?tab=users"}
+                className="flex items-center p-2 hover:bg-slate-300 rounded"
+              >
+                <FaUsers className='mr-3'/>
+                <span>All Users</span>
               </Link>
             </li>
           )}

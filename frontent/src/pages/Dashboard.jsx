@@ -2,9 +2,11 @@ import DashboardSidebar from '@/components/shared/DashboardSidebar'
 import DashboardProfile from '@/components/shared/DashboardProfile'
 import BottomNavBar from '@/components/shared/BottomNavBar'
 import DashboardPosts from '@/components/shared/DashboardPosts'
+// import DashboardUsers from '@/components/shared/DashboardUsers'
 import { Search } from 'lucide-react'
 import React, { useEffect, useState } from "react"
 import { useLocation } from 'react-router-dom'
+import DashboardUsers from '@/components/shared/DashboardUsers'
 
 const Dashboard = () => {
   const location = useLocation()
@@ -35,6 +37,10 @@ const Dashboard = () => {
         {tab === "profile" && <DashboardProfile />}
         {/* newsArticle */}
         {tab === "posts" && <DashboardPosts />}
+        
+        {/*users */}
+        {tab === "users" && <DashboardUsers />}
+
       </div>
     </div>
   ) 
