@@ -1,3 +1,4 @@
+import Advertise from "@/components/shared/Advertise"
 import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Link, useParams } from "react-router-dom"
@@ -85,6 +86,10 @@ function PostDetails() {
         dangerouslySetInnerHTML={{__html:
           post && post.content
         }}></div>
+
+        <div className="max-w-4xl mx-auto w-full">
+          <Advertise />
+        </div>
     </main>
   )
 }
