@@ -1,24 +1,25 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { Textarea } from "../ui/textarea"
 import { Button } from "../ui/button"
 import { useToast } from "@/hooks/use-toast"
-// import Comment from "./Comment"
+import Comment from "./Comment"
 
 const CommentSection = ({ postId }) => {
     const { toast } = useToast()  
 
     const { currentUser } = useSelector((state) => state.user)
     const [comment, setComment] = useState("")
-    // const [allComments, setAllComments] = useState([])
+    const [allComments, setAllComments] = useState([])
 
+    console.log(allComments);
     
     const handleSubmit = async (e) => {
       e.preventDefault()
   
       if (comment.length > 200) {
-        Toast({
+        toast({
           title: "Comment length must be lower than or equal to 200 characters",
         })
   
@@ -43,13 +44,33 @@ const CommentSection = ({ postId }) => {
         if (res.ok) {
           toast({ title: "Comment successfully!" })
           setComment("")
-          // setAllComments([data, ...allComments])
+          setAllComments([data, ...allComments])
         }
       } catch (error) {
         console.log(error)
         toast({ title: "Something went wrong! Please try again." })
       }
     }
+
+    useEffect(() => {
+      const getComments = async () => {
+        try {
+          const res = await fetch(`/api/comment/getPostComments/${postId}`)
+  
+          if (res.ok) {
+            const data = await res.json()
+            setAllComments(data)
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+  
+      getComments()
+    }, [postId])
+  
+
+   
   
 
 
@@ -105,8 +126,30 @@ const CommentSection = ({ postId }) => {
         </form>
       )}
 
+{allComments.length === 0 ? (
+        <p className="text-sm my-5">No comments yes!</p>
+      ) : (
+        <>
+          <div className="text-sm my-5 flex items-center gap-1 font-semibold">
+            <p>Comments</p>
+
+            <div className="border border-gray-400 py-1 px-2 rounded-sm">
+              <p>{allComments.length}</p>
+            </div>
+          </div>
+
+          {allComments.map((comment) => (
+            <Comment
+              key={comment._id}
+              comment={comment}
+            />
+          ))}
+        </>
+      )}
+
+      
     </div>
-    )
+  )
 }
 
 export default CommentSection

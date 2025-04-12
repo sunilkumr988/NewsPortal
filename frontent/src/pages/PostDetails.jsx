@@ -12,7 +12,7 @@ function PostDetails() {
   const [error, setError] = useState(false)
   const [post, setPost] = useState(null)
 
-  console.log(post)
+  // console.log(post)
 
   useEffect(()=> {
     const fetchPost = async() => {
