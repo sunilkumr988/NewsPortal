@@ -92,7 +92,7 @@ function PostDetails() {
           <Advertise />
         </div>
 
-        <CommentSection postId={post._id} />
+        <CommentSection postId={post._id} post={post} />
     </main>
   )
 }

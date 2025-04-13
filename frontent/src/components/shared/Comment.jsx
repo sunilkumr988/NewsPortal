@@ -1,8 +1,12 @@
 import moment from 'moment'
+import { AiFillLike } from "react-icons/ai";
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
-const Comment = ({comment}) => {
+const Comment = ({comment, onLike}) => {
     const [user, setUser] = useState({})
+
+    const {currentUser} = useSelector((state) => state.user)
 
     useEffect(() => {
         const getUser = async () => {
@@ -46,6 +50,25 @@ const Comment = ({comment}) => {
             </div>
 
             <p className="text-slate-600 pb-2">{comment.content}</p>
+          <div className="flex items-center pt-2 text-sm border-t border-slate-300 max-w-fit gap-2">
+          <button
+                type="button"
+                onClick={() => onLike(comment._id)}
+                className={`text-gray-400 hover:text-blue-500 ${
+                  currentUser && 
+                  comment.likes.includes(currentUser._id) &&
+                   "!text-blue-600"}`}               
+              >
+                <AiFillLike className="text-lg"/>
+              </button>
+
+              <p className="text-gray-400">
+                {comment.numberOfLikes > 0 &&
+                 comment.numberOfLikes +
+                " " +
+                (comment.numberOfLikes === 1 ? "likes" : "likes")}
+              </p>
+          </div>
         </div>
     </div>
   )
