@@ -108,6 +108,32 @@ const CommentSection = ({ postId }) => {
         editedContent} : c)
       )
     }
+
+    const handleDelete = async(commentId) => {
+      try {
+        
+        if (!currentUser) {
+          navigate("/sign-in")
+  
+          return
+        }
+  
+        const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
+          method: "DELETE",
+        })
+  
+        if (res.ok) {
+          const data = await res.json()
+  
+          setAllComments(
+            allComments.filter((comment) => comment._id !== commentId)
+          )
+        }
+        
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
   
   
 
@@ -185,6 +211,7 @@ const CommentSection = ({ postId }) => {
               comment={comment}
               onLike={handleLike}
               onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
         </>
