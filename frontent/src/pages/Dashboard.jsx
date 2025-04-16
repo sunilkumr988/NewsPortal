@@ -7,6 +7,9 @@ import { Search } from 'lucide-react'
 import React, { useEffect, useState } from "react"
 import { useLocation } from 'react-router-dom'
 import DashboardUsers from '@/components/shared/DashboardUsers'
+import DashboardComments from '@/components/shared/DashboardComments'
+import MainDashboard from "@/components/shared/MainDashboard"
+
 
 const Dashboard = () => {
   const location = useLocation()
@@ -41,6 +44,11 @@ const Dashboard = () => {
         {/*users */}
         {tab === "users" && <DashboardUsers />}
 
+        {/* Comments */}
+        {tab === "comments" && <DashboardComments />}
+
+       {/* dashboard main component */}
+       {tab === "dashboard" && <MainDashboard />}
       </div>
     </div>
   ) 
