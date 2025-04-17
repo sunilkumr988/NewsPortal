@@ -43,7 +43,7 @@ const App = () => {
         </Route>
 
 
-        <Route path="/news" element={<NewsArticles />} />
+        <Route path="/news" element={<Search />} />
         <Route path="/post/:postSlug" element={<PostDetails />} />
       </Routes>
 
